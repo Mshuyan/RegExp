@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+### myTemplate template
+/.idea
+*.iml
+*.cmd
+mvnw
+/.mvn
+/target
+.gitattributes
+*.jar
+/out

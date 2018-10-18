@@ -265,18 +265,19 @@ System.out.println(sbr.toString());
 
    例：`(happy|sad|cry)`可以匹配三个子字符串`happy`、`sad`、`cry`
 
-3. 分组编号
+3. `分组编号`与`分组捕获`
 
    + 作用
 
      > + 分组编号用于重新捕获和使用分组内==匹配到的内容==，每个分组按照出现的次序从1开始递增
-     > + 使用`\\分组编号`对分组进行引用
+     > + 使用`\\分组编号`对分组进行捕获
+     > + 使用`$`也可以对分组进行捕获
 
      例：
 
      + `<(\\w+)>(.*)</\\1>`可以匹配`<hearder>hello</header>`，但是不能匹配`<hearder>hello</headersss>`
      + 注意：
-       + `<(\\w+)>(.*)</\\1>`不等效于`<(\\w+)>(.*)</\\w+>`，引用分组时使用的不是分组内得表达式，而是分组内表达式匹配到的内容
+       + `<(\\w+)>(.*)</\\1>`不等效于`<(\\w+)>(.*)</\\w+>`，引用分组时使用的不是分组内得表达式，而是分组内表达式匹配到的内容；这就是分组捕获
        + `<(\\w+)>(.*)</\\w+>`可以匹配`<hearder>hello</header>`，也可以匹配`<hearder>hello</headersss>`
 
    + 分组命名
@@ -291,6 +292,31 @@ System.out.println(sbr.toString());
      >   + `name`为分组名称
 
      例：`<(?<group1>\\w+)>(.*)</\\k<group1>>`等效于`<(\\w+)>(.*)</\\1>`
+     
+4. 获取分组内容
+    ```java
+    Pattern pattern = Pattern.compile(".*(\\d{4})\\D+(\\d{1,2})\\D+(\\d{1,2}).*");
+    Matcher matcher = pattern.matcher("2018年09月10日");
+    while (matcher.find()) {
+        System.out.println(matcher.group(0));
+        System.out.println(matcher.group(1));
+        System.out.println(matcher.group(2));
+        System.out.println(matcher.group(3));
+    }
+    /*  结果：
+        2018年09月10日
+        2018
+        09
+        10
+     */
+    ```
+5. 捕获与替换
+    ```java
+    String str = "2018 / 10 / 1";
+    str = str.replaceAll(".*(\\d{4})\\D+(\\d{1,2})\\D+(\\d{1,2}).*","$1-$2-$3");
+    System.out.println(str);
+    //结果：2018-10-1
+    ```
 
 ### 边界匹配
 
